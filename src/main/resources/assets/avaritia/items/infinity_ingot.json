@@ -1,0 +1,14 @@
+{
+	"model": {
+		"type": "avaritia:effect",
+		"model": "avaritia:item/infinity_ingot",
+		"halo_type": 0,
+		"alpha": 1.0,
+		"pulse": false,
+		"base": {
+			"type": "minecraft:model",
+			"model": "avaritia:item/infinity_ingot"
+		}
+	},
+	"oversized_in_gui": true
+}

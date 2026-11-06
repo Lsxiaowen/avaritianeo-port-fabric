@@ -1,0 +1,141 @@
+plugins {
+	id 'net.fabricmc.fabric-loom' version "${loom_version}"
+	id 'maven-publish'
+}
+
+version = project.mod_version
+group = project.maven_group
+
+if (providers.gradleProperty('buildOutputDir').isPresent()) {
+	layout.buildDirectory = file(providers.gradleProperty('buildOutputDir').get())
+}
+
+base {
+	archivesName = project.archives_base_name
+}
+
+repositories {
+	maven {
+		name = 'JEI'
+		url = 'https://maven.blamejared.com/'
+		content {
+			includeGroup 'mezz.jei'
+		}
+	}
+	maven {
+		name = 'NeoForged'
+		url = 'https://maven.neoforged.net/releases/'
+		content {
+			includeGroup 'mezz.jei'
+		}
+	}
+}
+
+loom {
+	splitEnvironmentSourceSets()
+
+	mods {
+		"avaritia" {
+			sourceSet sourceSets.main
+			sourceSet sourceSets.client
+		}
+	}
+
+	accessWidenerPath = file("src/main/resources/avaritia.accesswidener")
+}
+
+configurations {
+	jeiApi {
+		canBeConsumed = false
+		canBeResolved = true
+	}
+	compileOnly.extendsFrom jeiApi
+	clientCompileOnly.extendsFrom jeiApi
+}
+
+dependencies {
+	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+
+	jeiApi "mezz.jei:jei-${project.jei_minecraft_version}-common-api:${project.jei_version}"
+	jeiApi "mezz.jei:jei-${project.jei_minecraft_version}-fabric-api:${project.jei_version}"
+}
+
+processResources {
+	inputs.property "version", project.version
+
+	filesMatching("fabric.mod.json") {
+		expand "version": inputs.properties.version
+	}
+}
+
+tasks.withType(JavaCompile).configureEach {
+	options.release = 25
+}
+
+java {
+	withSourcesJar()
+	sourceCompatibility = JavaVersion.VERSION_25
+	targetCompatibility = JavaVersion.VERSION_25
+}
+
+jar {
+	from("LICENSE") {
+		rename { "${it}_${project.base.archivesName.get()}" }
+	}
+}
+
+tasks.named('sourcesJar', Jar) {
+	from('LICENSE')
+}
+
+publishing {
+	publications {
+		create("mavenJava", MavenPublication) {
+			from components.java
+		}
+	}
+}
+
+if (providers.gradleProperty('renderTestsDir').isPresent()) {
+	def renderTests = file(providers.gradleProperty('renderTestsDir').get())
+	def renderScript = new File(renderTests, 'render-tests.gradle')
+	if (!renderScript.isFile()) {
+		throw new GradleException("Missing external render test script: ${renderScript}")
+	}
+	apply from: renderScript
+}
+
+tasks.register('githubSourceZip', Zip) {
+	group = 'distribution'
+	description = 'Packages only the files required for an independent GitHub source checkout.'
+	archiveClassifier = 'github-source'
+	destinationDirectory = layout.buildDirectory.dir('distributions')
+	from(projectDir) {
+		include 'src/**', 'gradle/**', 'gradlew', 'gradlew.bat'
+		include '*.gradle', 'gradle.properties', '*.md', 'LICENSE'
+	}
+	from(files('.gitignore', '.gitattributes'))
+}
+
+tasks.register('releaseBundle') {
+	group = 'distribution'
+	description = 'Builds release JARs, a clean source ZIP, and SHA-256 checksums.'
+	dependsOn tasks.named('build'), tasks.named('githubSourceZip')
+	doLast {
+		def outputs = [tasks.named('jar').get().archiveFile.get().asFile,
+			tasks.named('sourcesJar').get().archiveFile.get().asFile,
+			tasks.named('githubSourceZip').get().archiveFile.get().asFile]
+		def checksumFile = layout.buildDirectory.file('distributions/SHA256SUMS.txt').get().asFile
+		checksumFile.text = outputs.collect { artifact ->
+			def digest = java.security.MessageDigest.getInstance('SHA-256')
+			artifact.withInputStream { stream ->
+				byte[] buffer = new byte[8192]
+				int count
+				while ((count = stream.read(buffer)) != -1) digest.update(buffer, 0, count)
+			}
+			"${digest.digest().encodeHex()}  ${artifact.name}"
+		}.join(System.lineSeparator()) + System.lineSeparator()
+	}
+}

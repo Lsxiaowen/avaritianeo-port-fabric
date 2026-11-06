@@ -1,0 +1,14 @@
+{
+	"model": {
+		"type": "avaritia:effect",
+		"model": "avaritia:item/endest_pearl",
+		"halo_type": 2,
+		"alpha": 1.0,
+		"pulse": true,
+		"base": {
+			"type": "minecraft:model",
+			"model": "avaritia:item/endest_pearl"
+		}
+	},
+	"oversized_in_gui": true
+}

@@ -1,0 +1,21 @@
+{
+  "type": "avaritia:compressor",
+  "result": {
+    "id": "avaritia:json_singularity",
+    "components": {
+      "avaritia:singularity_id": "red_matter_singularity"
+    }
+  },
+  "cost": 200,
+  "ingredients": [
+    "projecte:red_matter_block"
+  ],
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "projecte"
+      ]
+    }
+  ]
+}

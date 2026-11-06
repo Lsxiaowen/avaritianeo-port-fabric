@@ -1,0 +1,41 @@
+{
+	"schemaVersion": 1,
+	"id": "avaritia",
+	"version": "${version}",
+	"name": "AvaritiaNeo Port (Fabric)",
+	"description": "Avaritia ported to Minecraft 26.1.2 on Fabric.",
+	"authors": [
+		"xiaowen"
+	],
+	"contributors": [
+		"Aqua3 (original AvaritiaNeo author)"
+	],
+	"contact": {},
+	"license": "MIT",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"net.byAqua3.avaritia.Avaritia"
+		],
+		"client": [
+			"net.byAqua3.avaritia.AvaritiaClient"
+		],
+		"jei_mod_plugin": [
+			"net.byAqua3.avaritia.compat.jei.AvaritiaJEIPlugin"
+		]
+	},
+	"mixins": [
+		"avaritia.mixins.json",
+		"avaritia.client.mixins.json"
+	],
+	"accessWidener": "avaritia.accesswidener",
+	"depends": {
+		"fabricloader": ">=0.20.1",
+		"minecraft": "~26.1.2",
+		"java": ">=25",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"jei": "*"
+	}
+}

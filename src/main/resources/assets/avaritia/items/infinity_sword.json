@@ -1,0 +1,11 @@
+{
+	"model": {
+		"type": "avaritia:effect",
+		"model": "avaritia:item/infinity_sword",
+		"mask": "avaritia:item/effects/infinity_sword_mask",
+		"base": {
+			"type": "minecraft:model",
+			"model": "avaritia:item/infinity_sword"
+		}
+	}
+}

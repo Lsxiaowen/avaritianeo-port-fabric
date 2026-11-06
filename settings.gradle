@@ -1,0 +1,15 @@
+pluginManagement {
+	repositories {
+		maven {
+			name = 'Fabric'
+			url = 'https://maven.fabricmc.net/'
+		}
+		mavenCentral()
+		gradlePluginPortal()
+	}
+}
+
+rootProject.name = 'avaritianeo-port-fabric'
+
+org.apache.tools.ant.DirectoryScanner.removeDefaultExclude('**/.gitignore')
+org.apache.tools.ant.DirectoryScanner.removeDefaultExclude('**/.gitattributes')

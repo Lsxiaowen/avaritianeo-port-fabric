@@ -1,0 +1,22 @@
+{
+	"required": true,
+	"package": "net.byAqua3.avaritia.mixin",
+	"compatibilityLevel": "JAVA_25",
+	"environment": "client",
+	"client": [
+		"MixinGui",
+		"MixinLivingEntityRenderer",
+		"MixinHumanoidRenderState",
+		"PlayerModelAccessor",
+		"MixinRenderType",
+		"MixinCustomFeatureRenderer",
+		"MixinDynamicUniforms",
+		"ItemModelsAccessor",
+		"ItemTintSourcesAccessor",
+		"ItemStackRenderStateAccessor",
+		"ItemLayerAccessor"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}

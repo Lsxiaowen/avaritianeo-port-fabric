@@ -1,0 +1,24 @@
+{
+	"model": {
+		"type": "avaritia:effect",
+		"model": "avaritia:item/iron_singularity",
+		"halo_type": 2,
+		"alpha": 1.0,
+		"pulse": false,
+		"base": {
+			"type": "minecraft:model",
+			"model": "avaritia:item/iron_singularity",
+			"tints": [
+				{
+					"type": "avaritia:singularity",
+					"layer": 0
+				},
+				{
+					"type": "avaritia:singularity",
+					"layer": 1
+				}
+			]
+		}
+	},
+	"oversized_in_gui": true
+}

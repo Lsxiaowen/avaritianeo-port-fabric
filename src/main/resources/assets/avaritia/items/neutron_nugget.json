@@ -1,0 +1,14 @@
+{
+	"model": {
+		"type": "avaritia:effect",
+		"model": "avaritia:item/neutron_nugget",
+		"halo_type": 1,
+		"alpha": 0.4,
+		"pulse": false,
+		"base": {
+			"type": "minecraft:model",
+			"model": "avaritia:item/neutron_nugget"
+		}
+	},
+	"oversized_in_gui": true
+}

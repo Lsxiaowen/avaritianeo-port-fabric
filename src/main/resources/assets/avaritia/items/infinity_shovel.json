@@ -1,0 +1,16 @@
+{
+	"model": {
+		"type": "minecraft:condition",
+		"property": "minecraft:has_component",
+		"component": "avaritia:destroyer",
+		"ignore_default": true,
+		"on_true": {
+			"type": "minecraft:model",
+			"model": "avaritia:item/infinity_shovel_destroyer"
+		},
+		"on_false": {
+			"type": "minecraft:model",
+			"model": "avaritia:item/infinity_shovel"
+		}
+	}
+}

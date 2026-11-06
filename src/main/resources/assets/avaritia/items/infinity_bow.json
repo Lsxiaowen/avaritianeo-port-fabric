@@ -1,0 +1,55 @@
+{
+	"model": {
+		"type": "minecraft:condition",
+		"property": "minecraft:using_item",
+		"on_false": {
+			"type": "avaritia:effect",
+			"model": "avaritia:item/infinity_bow",
+			"mask": "avaritia:item/effects/infinity_bow_mask",
+			"base": {
+				"type": "minecraft:model",
+				"model": "avaritia:item/infinity_bow"
+			}
+		},
+		"on_true": {
+			"type": "minecraft:range_dispatch",
+			"property": "minecraft:use_duration",
+			"scale": 0.125,
+			"fallback": {
+				"type": "avaritia:effect",
+				"model": "avaritia:item/infinity_bow_pull_0",
+				"mask": "avaritia:item/effects/infinity_bow_pull_0_mask",
+				"base": {
+					"type": "minecraft:model",
+					"model": "avaritia:item/infinity_bow_pull_0"
+				}
+			},
+			"entries": [
+				{
+					"threshold": 0.65,
+					"model": {
+						"type": "avaritia:effect",
+						"model": "avaritia:item/infinity_bow_pull_1",
+						"mask": "avaritia:item/effects/infinity_bow_pull_1_mask",
+						"base": {
+							"type": "minecraft:model",
+							"model": "avaritia:item/infinity_bow_pull_1"
+						}
+					}
+				},
+				{
+					"threshold": 0.9,
+					"model": {
+						"type": "avaritia:effect",
+						"model": "avaritia:item/infinity_bow_pull_2",
+						"mask": "avaritia:item/effects/infinity_bow_pull_2_mask",
+						"base": {
+							"type": "minecraft:model",
+							"model": "avaritia:item/infinity_bow_pull_2"
+						}
+					}
+				}
+			]
+		}
+	}
+}
