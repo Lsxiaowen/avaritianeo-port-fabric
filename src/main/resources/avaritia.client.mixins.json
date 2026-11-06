@@ -1,6 +1,7 @@
 {
 	"required": true,
 	"package": "net.byAqua3.avaritia.mixin",
+	"plugin": "net.byAqua3.avaritia.compat.iris.IrisMixinPlugin",
 	"compatibilityLevel": "JAVA_25",
 	"environment": "client",
 	"client": [
@@ -9,6 +10,11 @@
 		"MixinHumanoidRenderState",
 		"PlayerModelAccessor",
 		"MixinRenderType",
+		"MeshDataAccessor",
+		"GlRenderPassAccessor",
+		"MixinGlCommandEncoder",
+		"MixinGlDevice",
+		"MixinIrisRenderingPipeline",
 		"MixinCustomFeatureRenderer",
 		"MixinDynamicUniforms",
 		"ItemModelsAccessor",

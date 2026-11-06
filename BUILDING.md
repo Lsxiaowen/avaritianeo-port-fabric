@@ -21,12 +21,12 @@ Linux/macOS 使用 `./gradlew`，必要时先执行 `chmod +x gradlew`。普通�
 
 产物：
 
-- `build/libs/avaritianeo-port-fabric-1.0.0-rc.jar`：正式模组。
-- `build/libs/avaritianeo-port-fabric-1.0.0-rc-sources.jar`：源码附件，不可放进 mods。
-- `build/distributions/avaritianeo-port-fabric-1.0.0-rc-github-source.zip`：可独立构建的 GitHub 源码上传包。
+- `build/libs/avaritianeo-port-fabric-1.0.0-rc.2.jar`：正式模组。
+- `build/libs/avaritianeo-port-fabric-1.0.0-rc.2-sources.jar`：源码附件，不可放进 mods。
+- `build/distributions/avaritianeo-port-fabric-1.0.0-rc.2-github-source.zip`：可独立构建的 GitHub 源码上传包。
 - `build/distributions/SHA256SUMS.txt`：上述三个文件的 SHA-256。发布时将文件放在同一附件目录后校验。
 
-项目名及产物前缀为 `avaritianeo-port-fabric`，显示名称为 AvaritiaNeo Port (Fabric)。作者 `xiaowen`、版本 `1.0.0-rc`、模组 ID `avaritia`；包名、资源命名空间、存档标识保持不变。
+项目名及产物前缀为 `avaritianeo-port-fabric`，显示名称为 AvaritiaNeo Port (Fabric)。作者 `xiaowen`、版本 `1.0.0-rc.2`、模组 ID `avaritia`；包名、资源命名空间、存档标识保持不变。
 
 ## 外置回归测试
 
@@ -47,7 +47,7 @@ Linux/macOS 使用 `./gradlew`，必要时先执行 `chmod +x gradlew`。普通�
 ../avaritianeo-port-fabric-tests/run-tests.ps1
 ```
 
-参数 `-Offline` 使用已有缓存；`-Tasks` 可选择 `verifyRendering`、`runRenderRuntimeContracts`、`runRenderUiContracts`、`runRenderAnimationContracts`。首次使用外置目录需要下载依赖，不要假定旧缓存可直接复用。
+参数 `-Offline` 使用已有缓存；`-Tasks` 可选择 `verifyRendering`、`runRenderRuntimeContracts`、`runRenderUiContracts`、`runRenderAnimationContracts`、`runRenderShaderContracts`。首次使用外置目录需要下载依赖，不要假定旧缓存可直接复用。
 
 测试脚本将主项目构建输出重定向到 tests 的 `build/mod/`，测试夹具位于 `build/`，Gradle 缓存位于 `cache/`，日志位于 `logs/`，运行世界、截图及选项位于 `runs/`。不会修改用户启动器或服务器目录。
 
@@ -71,12 +71,33 @@ GPU 测试检查图集、物品模型、护甲 UV/延迟姿态快照、OBJ、着
 
 此前已验证指定组合：FA+Player 1.1、JustExpressions 1.2.1、EMF 3.3.12、ETF 7.2.7、EMF Compat Core 2.3.2、Touch n Motion 1.0.4、Sodium 0.8.12+mc26.1.2、3D Skin Layers 1.11.4-mc26.1。仅针对护甲动画，不代表所有第三方功能均兼容。
 
+## 可选的 Iris 光影回归
+
+自行提供 Iris、Sodium 和光影包，不随本项目分发。将光影包放到 tests 的 `runs/render-shaders/shaderpacks/`，并在该运行目录的 `config/iris.properties` 指定 `enableShaders=true`、`shaderPack=实际文件名.zip` 和 `allowUnknownShaders=false`。不要修改实际启动器的配置。
+
+```powershell
+$tests = (Resolve-Path ../avaritianeo-port-fabric-tests).Path
+$mods = @("$tests/inputs/iris.jar", "$tests/inputs/sodium.jar") -join [IO.Path]::PathSeparator
+../avaritianeo-port-fabric-tests/run-tests.ps1 -Offline -Tasks runRenderShaderContracts -ShaderExtraMods $mods
+```
+
+该任务使用一次性世界，输出至 `runs/render-shaders/screenshots/`；除了实际渲染通道，还读取 PNG 验证剑身星空可见和头盔彩虹随真实时间变化，避免仅以无报错或提交了几何作为成功标准。当前验证组合及限制见 RENDER_PORT.md。
+
+## 可选的机器与持续性能回归
+
+```powershell
+../avaritianeo-port-fabric-tests/run-tests.ps1 -Offline -Tasks runCollectorContracts
+../avaritianeo-port-fabric-tests/run-tests.ps1 -Offline -Tasks runRenderPerformanceContracts,'-PperformanceLabel=fixed','-PperformanceSamples=12' -ShaderExtraMods $mods
+```
+
+机器回归使用真实服务端漏斗 tick；性能回归使用上述 Iris 测试目录，连续测量空手、持剑、套装与卸装，保存 JFR 和每10秒的帧耗时/资源计数。仅测试客户端关闭闲置降帧，不修改实际客户端。fixed 标签同时检查缓存条目不随帧数增长。
+
 ## 可选的上游资源一致性检查
 
 在主项目目录执行；若采用外置 build 输出，传入对应 `--build-dir` 和 `--jar`：
 
 ```powershell
-python ../avaritianeo-port-fabric-tests/tools/verify_render_parity.py --project . --original ../AvaritiaNeo-main --jar build/libs/avaritianeo-port-fabric-1.0.0-rc.jar
+python ../avaritianeo-port-fabric-tests/tools/verify_render_parity.py --project . --original ../AvaritiaNeo-main --jar build/libs/avaritianeo-port-fabric-1.0.0-rc.2.jar
 ```
 
 脚本核对 11 项 cosmic 模型、20 项 halo、15 项名称注册、上游纹理/动画/OBJ，以及 JAR 内资源与编译类，确保测试夹具未混入正式包。

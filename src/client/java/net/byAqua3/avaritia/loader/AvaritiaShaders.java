@@ -75,6 +75,7 @@ public final class AvaritiaShaders {
 	}
 
 	public static void endFrame() {
+		AvaritiaRenderTypes.endFrame();
 		if (uniforms != null) {
 			uniforms.endFrame();
 		}
@@ -86,5 +87,6 @@ public final class AvaritiaShaders {
 			uniforms = null;
 		}
 		PARAMETERS.clear();
+		AvaritiaRenderTypes.close();
 	}
 }

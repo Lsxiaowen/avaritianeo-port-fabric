@@ -2,7 +2,7 @@
 
 无尽贪婪的 Minecraft 26.1.2 Fabric 移植版，基于 Aqua3 的 AvaritiaNeo。
 
-- **版本：1.0.0-rc**（发布候选版）
+- **版本：1.0.0-rc.2**（发布候选版）
 - **移植作者：xiaowen**
 - **上游作者：Aqua3**
 - **许可证：MIT**，保留上游版权声明
@@ -20,7 +20,7 @@
 ## 安装
 
 1. 安装对应版本的 Fabric Loader 与 Fabric API。
-2. 将 `avaritianeo-port-fabric-1.0.0-rc.jar` 放入游戏的 `mods` 目录。
+2. 将 `avaritianeo-port-fabric-1.0.0-rc.2.jar` 放入游戏的 `mods` 目录。
 3. 移除旧版 Avaritia JAR，避免重复加载；升级前备份存档与配置。
 4. 如需配方浏览，可安装适配同一 Minecraft/Fabric 版本的 JEI。
 
@@ -61,7 +61,9 @@ chmod +x gradlew
 
 已修复 Fresh Animations: Player Extension 下的盔甲特效错位，并使用 FA+Player 1.1、JustExpressions 1.2.1、EMF 3.3.12、ETF 7.2.7、EMF Compat Core 2.3.2、Touch n Motion 1.0.4、Sodium 0.8.12 和 3D Skin Layers 1.11.4 的指定组合验证站立、行走、潜行及飞行动画。测试无需关闭玩家动画，第三方组件不随本项目分发。
 
-这些检查针对护甲姿态和渲染，不代表 Sodium 所有功能、Iris、其他动画模组或不同整合包已全面兼容。报告问题时请附版本、复现步骤和日志，并移除日志中的隐私信息。
+已修复 Iris/Photon 下星空与盔甲彩虹消失，并对 Iris 1.11.4、Sodium 0.9.2、Photon v1.3b 及上述动画组件运行光影图像回归，检查透明皮肤、彩虹变色和隔墙遮挡，详细版本与边界见 RENDER_PORT.md。
+
+这些检查针对护甲姿态和渲染，不代表 Sodium 所有功能、其他光影包、其他动画模组或不同整合包已全面兼容。报告问题时请附版本、复现步骤和日志，并移除日志中的隐私信息。
 
 ## 致谢与许可
 

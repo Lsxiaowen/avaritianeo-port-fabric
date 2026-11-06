@@ -5,6 +5,7 @@ import com.mojang.blaze3d.systems.RenderPass;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.MeshData;
 import net.byAqua3.avaritia.loader.AvaritiaShaders;
+import net.byAqua3.avaritia.compat.iris.IrisEffectQueue;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -18,8 +19,12 @@ public abstract class MixinRenderType {
 	@Unique
 	private GpuBufferSlice avaritia$cosmicParameters;
 
-	@Inject(method = "draw", at = @At("HEAD"))
+	@Inject(method = "draw", at = @At("HEAD"), cancellable = true)
 	private void avaritia$prepareUniforms(MeshData mesh, CallbackInfo callbackInfo) {
+		if (IrisEffectQueue.defer((RenderType) (Object) this, mesh)) {
+			callbackInfo.cancel();
+			return;
+		}
 		avaritia$cosmicParameters = AvaritiaShaders.prepare((RenderType) (Object) this);
 	}
 
