@@ -53,7 +53,7 @@ chmod +x gradlew
 
 项目与产物统一使用 `avaritianeo-port-fabric`；模组 ID 仍为 `avaritia`，Java 包名、资源命名空间和存档标识不变。运行 `./gradlew.bat releaseBundle` 可生成发布 JAR、源码 JAR、干净 GitHub 源码 ZIP 和 SHA-256 清单。
 
-详见 [构建与测试](BUILDING.md)、[渲染移植说明](RENDER_PORT.md)、[更新记录](CHANGELOG.md) 和 [GitHub 发布清单](RELEASE.md)。
+详见 [构建与测试](BUILDING.md)、[渲染移植说明](RENDER_PORT.md)和[更新记录](CHANGELOG.md)。
 
 ## 测试与兼容性
 
