@@ -3,6 +3,8 @@ package net.byAqua3.avaritia.render.layer;
 import java.awt.Color;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.byAqua3.avaritia.Avaritia;
+import net.byAqua3.avaritia.config.AvaritiaClientConfig;
+import net.byAqua3.avaritia.config.AvaritiaClientConfig.Option;
 import net.byAqua3.avaritia.event.AvaritiaClientEvent;
 import net.byAqua3.avaritia.loader.AvaritiaDataComponents;
 import net.byAqua3.avaritia.loader.AvaritiaItems;
@@ -57,38 +59,43 @@ public final class LayerInfinityArmor<S extends HumanoidRenderState, M extends H
 
 	private void submitArmor(PoseStack poses, SubmitNodeCollector collector, int light, S state,
 			boolean helmet, boolean chest, boolean legs, boolean boots, boolean wingsVisible) {
+		boolean cosmicEnabled = AvaritiaClientConfig.INSTANCE.enabled(Option.ARMOR_COSMIC);
+		boolean glowEnabled = AvaritiaClientConfig.INSTANCE.enabled(Option.ARMOR_RAINBOW);
+		if (!cosmicEnabled && !glowEnabled && !wingsVisible) return;
 		M parent = getParentModel();
 		InfinityArmorModel model = state.isBaby ? baby : adult;
 		model.sync(parent, parent instanceof PlayerModelAccessor player && player.avaritia$isSlim());
 		InfinityArmorState visual = (InfinityArmorState) state;
-		float time = AvaritiaShaders.time();
-		RenderType cosmic = AvaritiaRenderTypes.cosmic(new AvaritiaShaders.Parameters(time,
-				visual.avaritia$getYaw(), visual.avaritia$getPitch(), 1.0F, 0.9F), true);
-		TextureAtlasSprite mask = sprite("infinity_armor_mask");
+		float time = cosmicEnabled || glowEnabled ? AvaritiaShaders.time() : 0;
+		RenderType cosmic = cosmicEnabled ? AvaritiaRenderTypes.cosmic(new AvaritiaShaders.Parameters(time,
+				visual.avaritia$getYaw(), visual.avaritia$getPitch(), 1.0F, 0.9F), true) : null;
+		TextureAtlasSprite mask = cosmicEnabled ? sprite("infinity_armor_mask") : null;
 		float pulse = (float) (Math.sin(time / 10.0D) * 0.5D + 0.5D);
 		int glow = new Color(0.84F, 1.0F, 0.95F, (float) (Math.pow(pulse, 6) * 0.5D)).getRGB();
 		var cosmicCollector = collector.order(2);
 		var eyeCollector = collector.order(3);
-		if (helmet) {
+		if (helmet && cosmicEnabled) {
 			model.submitShell(poses, cosmicCollector, cosmic, mask, light, -1, "head", "hat");
 		}
 		if (chest) {
-			model.submitShell(poses, cosmicCollector, cosmic, mask, light, -1, "body", "left_arm", "right_arm");
-			model.submitShell(poses, eyeCollector, AvaritiaRenderTypes.wingGlow(EYES), null, light, glow,
+			if (cosmicEnabled) model.submitShell(poses, cosmicCollector, cosmic, mask, light, -1, "body", "left_arm", "right_arm");
+			if (glowEnabled) model.submitShell(poses, eyeCollector, AvaritiaRenderTypes.wingGlow(EYES), null, light, glow,
 					"body", "left_arm", "right_arm");
 		}
 		if (legs) {
-			model.submitShell(poses, cosmicCollector, cosmic, mask, light, -1, "left_leg", "right_leg");
-			model.submitShell(poses, eyeCollector, AvaritiaRenderTypes.wingGlow(EYES), null, light, glow,
+			if (cosmicEnabled) model.submitShell(poses, cosmicCollector, cosmic, mask, light, -1, "left_leg", "right_leg");
+			if (glowEnabled) model.submitShell(poses, eyeCollector, AvaritiaRenderTypes.wingGlow(EYES), null, light, glow,
 					"left_leg", "right_leg");
 		}
-		if (boots) {
+		if (boots && cosmicEnabled) {
 			model.submitShell(poses, cosmicCollector, cosmic, mask, light, -1, "left_boot", "right_boot");
 		}
 		if (helmet && chest && legs && boots) {
-			int color = Color.HSBtoRGB((System.currentTimeMillis() - AvaritiaClientEvent.lastTime) / 2000.0F, 1, 1);
-			model.submitShell(poses, collector.order(4), AvaritiaRenderTypes.glow(EYES), null, light, color, "hat");
-			model.submitSkin(poses, collector.order(5), cosmic, sprite("infinity_armor_mask_inv"), light);
+			if (glowEnabled) {
+				int color = Color.HSBtoRGB((System.currentTimeMillis() - AvaritiaClientEvent.lastTime) / 2000.0F, 1, 1);
+				model.submitShell(poses, collector.order(4), AvaritiaRenderTypes.glow(EYES), null, light, color, "hat");
+			}
+			if (cosmicEnabled) model.submitSkin(poses, collector.order(5), cosmic, sprite("infinity_armor_mask_inv"), light);
 		}
 		if (wingsVisible) {
 			poses.pushPose();
@@ -99,9 +106,9 @@ public final class LayerInfinityArmor<S extends HumanoidRenderState, M extends H
 			}
 			InfinityArmorModel.submit(wings, poses, collector.order(0), RenderTypes.armorCutoutNoCull(WING), null,
 					light, -1, "left_wing", "right_wing");
-			InfinityArmorModel.submit(wings, poses, collector.order(1), AvaritiaRenderTypes.wingGlow(WING_GLOW), null,
+			if (glowEnabled) InfinityArmorModel.submit(wings, poses, collector.order(1), AvaritiaRenderTypes.wingGlow(WING_GLOW), null,
 					light, glow, "left_wing", "right_wing");
-			InfinityArmorModel.submit(wings, poses, cosmicCollector, cosmic, sprite("infinity_armor_mask_wings"),
+			if (cosmicEnabled) InfinityArmorModel.submit(wings, poses, cosmicCollector, cosmic, sprite("infinity_armor_mask_wings"),
 					light, -1, "left_wing", "right_wing");
 			poses.popPose();
 		}

@@ -8,6 +8,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.QuadInstance;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.byAqua3.avaritia.Avaritia;
+import net.byAqua3.avaritia.config.AvaritiaClientConfig;
+import net.byAqua3.avaritia.config.AvaritiaClientConfig.Option;
 import net.byAqua3.avaritia.loader.AvaritiaRenderTypes;
 import net.byAqua3.avaritia.loader.AvaritiaShaders;
 import net.minecraft.client.renderer.SubmitNodeCollector;
@@ -43,7 +45,7 @@ public final class ItemEffectsRenderer implements SpecialModelRenderer<ItemEffec
 	@Override
 	public void submit(Arguments arguments, PoseStack poses, SubmitNodeCollector collector,
 			int light, int overlay, boolean foil, int outlineColor) {
-		if (!quads.isEmpty()) {
+		if (!quads.isEmpty() && AvaritiaClientConfig.INSTANCE.enabled(Option.ITEM_COSMIC)) {
 			QuadInstance instance = new QuadInstance();
 			instance.setColor(-1);
 			instance.setLightCoords(light);
@@ -54,7 +56,7 @@ public final class ItemEffectsRenderer implements SpecialModelRenderer<ItemEffec
 				}
 			});
 		}
-		if (haloType >= 0 && arguments.gui()) {
+		if (haloType >= 0 && arguments.gui() && AvaritiaClientConfig.INSTANCE.enabled(Option.ITEM_HALO)) {
 			poses.pushPose();
 			float size = haloType == 0 ? 2.25F : haloType == 1 ? 2.0F : 1.5F;
 			poses.scale(size, size, 1);

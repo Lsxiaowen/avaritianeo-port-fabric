@@ -9,6 +9,8 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.byAqua3.avaritia.item.ItemMatterCluster;
+import net.byAqua3.avaritia.config.AvaritiaClientConfig;
+import net.byAqua3.avaritia.config.AvaritiaClientConfig.Option;
 import net.byAqua3.avaritia.loader.AvaritiaShaders;
 import net.byAqua3.avaritia.loader.AvaritiaDataComponents;
 import net.byAqua3.avaritia.mixin.ItemLayerAccessor;
@@ -54,6 +56,12 @@ public final class EffectItemModel implements ItemModel {
 	@Override
 	public void update(ItemStackRenderState state, ItemStack stack, ItemModelResolver resolver,
 			ItemDisplayContext context, ClientLevel level, ItemOwner owner, int seed) {
+		if ((cosmic && !AvaritiaClientConfig.INSTANCE.enabled(Option.ITEM_COSMIC))
+				|| (!cosmic && !AvaritiaClientConfig.INSTANCE.enabled(Option.ITEM_HALO)
+						&& !AvaritiaClientConfig.INSTANCE.enabled(Option.ITEM_PULSE))) {
+			base.update(state, stack, resolver, context, level, owner, seed);
+			return;
+		}
 		Minecraft minecraft = Minecraft.getInstance();
 		float yaw = context == ItemDisplayContext.GUI || minecraft.player == null ? 0 : minecraft.player.getYRot() * Mth.DEG_TO_RAD;
 		float pitch = context == ItemDisplayContext.GUI || minecraft.player == null ? 0 : -minecraft.player.getXRot() * Mth.DEG_TO_RAD;
@@ -66,14 +74,15 @@ public final class EffectItemModel implements ItemModel {
 		}
 		ItemEffectsRenderer.Arguments arguments = new ItemEffectsRenderer.Arguments(context == ItemDisplayContext.GUI,
 				new AvaritiaShaders.Parameters(AvaritiaShaders.time(), yaw, pitch, context == ItemDisplayContext.GUI ? 100 : 1, opacity));
-		if (!cosmic && context == ItemDisplayContext.GUI) {
+		if (!cosmic && context == ItemDisplayContext.GUI && AvaritiaClientConfig.INSTANCE.enabled(Option.ITEM_HALO)) {
 			addEffectLayer(state, context, arguments);
 			state.setOversizedInGui(true);
 		}
 		ItemStackRenderStateAccessor access = (ItemStackRenderStateAccessor) state;
 		int first = access.avaritia$getActiveLayerCount();
 		base.update(state, stack, resolver, context, level, owner, seed);
-		if (context == ItemDisplayContext.GUI && (pulse || haloType == 0)) {
+		if (AvaritiaClientConfig.INSTANCE.enabled(Option.ITEM_PULSE)
+				&& context == ItemDisplayContext.GUI && (pulse || haloType == 0)) {
 			float scale = ThreadLocalRandom.current().nextFloat(0.95F, 1.05F);
 			float offset = (1.0F - scale) / 2.0F;
 			for (int index = first; index < access.avaritia$getActiveLayerCount(); index++) {

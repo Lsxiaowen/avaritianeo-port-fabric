@@ -22,6 +22,7 @@ import net.byAqua3.avaritia.item.ItemRecordFragment;
 import net.byAqua3.avaritia.item.ItemSingularity;
 import net.byAqua3.avaritia.item.ItemSkullFireSword;
 import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -33,6 +34,7 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.item.equipment.ArmorType;
 import net.minecraft.world.item.equipment.Equippable;
+import net.minecraft.util.Unit;
 
 import java.util.function.Function;
 
@@ -49,30 +51,34 @@ public class AvaritiaItems {
 		return Registry.register(BuiltInRegistries.ITEM, itemKey, item);
 	}
 
-	public static final Item INFINITY_SWORD = register(key("infinity_sword"), ItemInfinitySword::new,
+	private static <T extends Item> T registerEquipment(ResourceKey<Item> itemKey, Function<Item.Properties, T> factory, Item.Properties properties) {
+		return register(itemKey, factory, properties.component(DataComponents.UNBREAKABLE, Unit.INSTANCE));
+	}
+
+	public static final Item INFINITY_SWORD = registerEquipment(key("infinity_sword"), ItemInfinitySword::new,
 			new Item.Properties().rarity(COSMIC_RARITY).stacksTo(1).fireResistant().sword(AvaritiaToolMaterials.INFINITY, 2.0F, -2.4F));
-	public static final Item SKULLFIRE_SWORD = register(key("skullfire_sword"), ItemSkullFireSword::new,
+	public static final Item SKULLFIRE_SWORD = registerEquipment(key("skullfire_sword"), ItemSkullFireSword::new,
 			new Item.Properties().rarity(Rarity.EPIC).sword(ToolMaterial.DIAMOND, 3.0F, -2.4F));
-	public static final Item INFINITY_AXE = register(key("infinity_axe"), ItemInfinityAxe::new,
+	public static final Item INFINITY_AXE = registerEquipment(key("infinity_axe"), ItemInfinityAxe::new,
 			new Item.Properties().rarity(COSMIC_RARITY).stacksTo(1).fireResistant().axe(AvaritiaToolMaterials.INFINITY, 29.0F, -3.0F));
-	public static final Item INFINITY_PICKAXE = register(key("infinity_pickaxe"), ItemInfinityPickaxe::new,
+	public static final Item INFINITY_PICKAXE = registerEquipment(key("infinity_pickaxe"), ItemInfinityPickaxe::new,
 			new Item.Properties().rarity(COSMIC_RARITY).stacksTo(1).fireResistant().pickaxe(AvaritiaToolMaterials.INFINITY, 15.0F, -2.8F));
-	public static final Item INFINITY_SHOVEL = register(key("infinity_shovel"), ItemInfinityShovel::new,
+	public static final Item INFINITY_SHOVEL = registerEquipment(key("infinity_shovel"), ItemInfinityShovel::new,
 			new Item.Properties().rarity(COSMIC_RARITY).stacksTo(1).fireResistant().shovel(AvaritiaToolMaterials.INFINITY, 16.0F, -2.0F));
-	public static final Item INFINITY_HOE = register(key("infinity_hoe"), ItemInfinityHoe::new,
+	public static final Item INFINITY_HOE = registerEquipment(key("infinity_hoe"), ItemInfinityHoe::new,
 			new Item.Properties().rarity(COSMIC_RARITY).stacksTo(1).fireResistant().hoe(AvaritiaToolMaterials.INFINITY, 29.0F, 0.0F));
-	public static final Item INFINITY_BOW = register(key("infinity_bow"), ItemInfinityBow::new,
+	public static final Item INFINITY_BOW = registerEquipment(key("infinity_bow"), ItemInfinityBow::new,
 			new Item.Properties().rarity(COSMIC_RARITY).stacksTo(1).fireResistant());
-	public static final Item INFINITY_HELMET = register(key("infinity_helmet"),
+	public static final Item INFINITY_HELMET = registerEquipment(key("infinity_helmet"),
 			p -> new ItemInfinityArmor(net.minecraft.world.entity.EquipmentSlot.HEAD, p),
 			infinityArmor(ArmorType.HELMET));
-	public static final Item INFINITY_CHESTPLATE = register(key("infinity_chestplate"),
+	public static final Item INFINITY_CHESTPLATE = registerEquipment(key("infinity_chestplate"),
 			p -> new ItemInfinityArmor(net.minecraft.world.entity.EquipmentSlot.CHEST, p),
 			infinityArmor(ArmorType.CHESTPLATE));
-	public static final Item INFINITY_LEGGINGS = register(key("infinity_leggings"),
+	public static final Item INFINITY_LEGGINGS = registerEquipment(key("infinity_leggings"),
 			p -> new ItemInfinityArmor(net.minecraft.world.entity.EquipmentSlot.LEGS, p),
 			infinityArmor(ArmorType.LEGGINGS));
-	public static final Item INFINITY_BOOTS = register(key("infinity_boots"),
+	public static final Item INFINITY_BOOTS = registerEquipment(key("infinity_boots"),
 			p -> new ItemInfinityArmor(net.minecraft.world.entity.EquipmentSlot.FEET, p),
 			infinityArmor(ArmorType.BOOTS));
 

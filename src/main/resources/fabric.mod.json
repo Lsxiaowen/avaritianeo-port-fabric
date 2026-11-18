@@ -20,6 +20,9 @@
 		"client": [
 			"net.byAqua3.avaritia.AvaritiaClient"
 		],
+		"modmenu": [
+			"net.byAqua3.avaritia.compat.modmenu.AvaritiaModMenu"
+		],
 		"jei_mod_plugin": [
 			"net.byAqua3.avaritia.compat.jei.AvaritiaJEIPlugin"
 		]
@@ -36,6 +39,7 @@
 		"fabric-api": "*"
 	},
 	"suggests": {
-		"jei": "*"
+		"jei": "*",
+		"modmenu": "*"
 	}
 }

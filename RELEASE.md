@@ -12,7 +12,7 @@ GitHub 网页上传不会自动应用本地忽略规则，请勿直接拖入整�
 
 ## 发布前检查
 
-- [ ] `gradle.properties` 与成品 `fabric.mod.json` 版本均为 `1.0.0-rc.2`。
+- [ ] `gradle.properties`、`Avaritia.VERSION` 与成品 `fabric.mod.json` 版本均为 `1.0.0-rc.3`。
 - [ ] 模组作者为 `xiaowen`，Aqua3 上游署名及 LICENSE 保留。
 - [ ] JDK 25 下 `clean build` 成功，渲染和客户端回归任务通过。
 - [ ] 在目标客户端复核安装和升级存档，升级前先备份。
@@ -21,24 +21,26 @@ GitHub 网页上传不会自动应用本地忽略规则，请勿直接拖入整�
 
 ## Release 设置
 
-- 标签建议：`v1.0.0-rc.2`。
-- 标题建议：`AvaritiaNeo Port (Fabric) — 1.0.0-rc.2`。
+- 标签建议：`v1.0.0-rc.3`。
+- 标题建议：`AvaritiaNeo Port (Fabric) — 1.0.0-rc.3`。
 - 勾选 **Set as a pre-release**，标明 RC 状态。
-- 主附件：`build/libs/avaritianeo-port-fabric-1.0.0-rc.2.jar`。
-- 可选附件：同目录 `avaritianeo-port-fabric-1.0.0-rc.2-sources.jar`。
-- 源码上传包：`build/distributions/avaritianeo-port-fabric-1.0.0-rc.2-github-source.zip`。
+- 主附件：`build/libs/avaritianeo-port-fabric-1.0.0-rc.3.jar`。
+- 可选附件：同目录 `avaritianeo-port-fabric-1.0.0-rc.3-sources.jar`。
+- 源码上传包：`build/distributions/avaritianeo-port-fabric-1.0.0-rc.3-github-source.zip`。
 - `./gradlew.bat clean releaseBundle` 同时生成 `build/distributions/SHA256SUMS.txt`；清单中的三个文件名按发布附件所在目录解析。
 - 不要上传测试 JAR、第三方模组/材质包、旧 renderfix 包或运行日志。
 
 ## 可用的发布说明
 
-### AvaritiaNeo Port (Fabric) — 1.0.0-rc.2
+### AvaritiaNeo Port (Fabric) — 1.0.0-rc.3
 
 移植作者：**xiaowen**。基于 **Aqua3 / AvaritiaNeo**，保留 MIT 许可及上游署名。
 
 本候选版完成无尽装备、奇点和机器的 Fabric 移植，修复护甲/物品渲染、JEI 界面与机器预览、终极物品名称/彩虹提示、骷髅头掉落及镐铲特殊形态行为。
 
 本次修复中子态素收集器无法被下方漏斗抽取、头盔顶部与侧边彩虹外溢、持剑或穿甲时渲染缓存累积导致持续掉帧，以及 Iris 延迟绘制缓冲提前释放造成的崩溃；保留星空与彩虹特效。
+
+修复生存模式下无尽装备及炽焰之啄颅剑损耗耐久、显示耐久条的问题。新增可选 Mod Menu 配置入口，可在游戏内切换物品星空、盔甲星空、盔甲彩虹与发光、背包光晕及脉动，支持一键低特效、恢复默认和立即应用；无需 Cloth Config，不强制安装 Mod Menu。显示配置仅作用于本机，不影响装备能力；多人游戏的无限耐久修复需要服务端同步更新。
 
 要求 Minecraft **26.1.2**、Java **25+**、Fabric Loader **0.20.1+** 和 Fabric API（验证版本 **0.155.3+26.1.2**）。JEI 可选。安装前移除旧版 JAR 并备份存档，不要将 sources JAR 放入 mods。
 
