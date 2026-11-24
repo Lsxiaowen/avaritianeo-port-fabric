@@ -21,7 +21,7 @@ void main() {
     vec4 position = ModelViewMat * vec4(Position, 1.0);
     gl_Position = ProjMat * position;
 #ifdef IRIS_HAND
-    gl_Position.z = -gl_Position.w;
+    gl_Position.z = gl_Position.w;
 #endif
     fPos = position.xyz;
     sphericalVertexDistance = fog_spherical_distance(Position);

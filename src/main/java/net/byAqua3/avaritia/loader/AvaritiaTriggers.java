@@ -2,7 +2,6 @@ package net.byAqua3.avaritia.loader;
 
 import net.byAqua3.avaritia.Avaritia;
 import net.byAqua3.avaritia.trigger.TriggerAvaritiaRoot;
-import net.minecraft.advancements.CriterionTrigger;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 

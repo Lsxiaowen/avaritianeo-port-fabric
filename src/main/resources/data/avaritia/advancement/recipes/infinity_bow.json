@@ -6,7 +6,7 @@
         "damage": {
           "type": {
             "direct_entity": {
-              "type": "avaritia:infinity_arrow"
+              "minecraft:entity_type": "avaritia:infinity_arrow"
             },
             "tags": [
               {

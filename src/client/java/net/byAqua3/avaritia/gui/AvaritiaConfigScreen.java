@@ -59,7 +59,7 @@ public final class AvaritiaConfigScreen extends Screen {
 	@Override
 	public void onClose() {
 		if (AvaritiaClientConfig.INSTANCE.save()) {
-			minecraft.setScreen(parent);
+			minecraft.gui.setScreen(parent);
 		} else {
 			saveFailed = true;
 		}

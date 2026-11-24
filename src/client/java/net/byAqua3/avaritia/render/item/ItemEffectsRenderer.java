@@ -50,7 +50,7 @@ public final class ItemEffectsRenderer implements SpecialModelRenderer<ItemEffec
 			instance.setColor(-1);
 			instance.setLightCoords(light);
 			instance.setOverlayCoords(overlay);
-			collector.submitCustomGeometry(poses, AvaritiaRenderTypes.cosmic(arguments.parameters(), false), (pose, vertices) -> {
+			collector.order(1).submitCustomGeometry(poses, AvaritiaRenderTypes.cosmic(arguments.parameters(), false), (pose, vertices) -> {
 				for (BakedQuad quad : quads) {
 					vertices.putBakedQuad(pose, quad, instance);
 				}

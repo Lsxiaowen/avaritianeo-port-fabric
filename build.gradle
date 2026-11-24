@@ -60,6 +60,15 @@ configurations {
 	clientCompileOnly.extendsFrom jeiApi
 }
 
+fabricApi {
+	configureTests {
+		createSourceSet = true
+		modId = 'avaritia-test'
+		enableGameTests = false
+		enableClientGameTests = true
+	}
+}
+
 dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
