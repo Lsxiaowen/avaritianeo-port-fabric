@@ -1,5 +1,13 @@
 # 构建与回归测试
 
+## Minecraft 26.2
+
+使用 JDK 25，在本项目目录执行 `./gradlew.bat clean releaseBundle`。Linux/macOS 用 `./gradlew`。版本以 `gradle.properties` 为准；JEI 和 Mod Menu 为可选编译依赖，发布模组不捆绑联动依赖或测试代码。
+
+执行 `./gradlew.bat runClientGameTest` 可在桌面图形环境中运行本版临时世界测试，截图位于 `build/run/clientGameTest/screenshots/`。发布 JAR 与源码 JAR 位于 `build/libs/`，源码 ZIP 与 SHA-256 清单位于 `build/distributions/`，文件名带 `+mc26.2`。
+
+以下为 26.1.2 的历史测试说明，所列路径、产物与第三方验证结果不适用于 26.2。
+
 ## 环境与依赖
 
 - JDK 25，使用仓库自带的 Gradle Wrapper。

@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.WeakHashMap;
 import com.mojang.blaze3d.ProjectionType;
 import com.mojang.blaze3d.buffers.GpuBufferSlice;
-import com.mojang.blaze3d.systems.RenderPass;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.byAqua3.avaritia.Avaritia;
 import net.minecraft.client.Minecraft;
@@ -48,11 +47,12 @@ public final class AvaritiaShaders {
 		PARAMETERS.put(type, parameters);
 	}
 
-	public static GpuBufferSlice prepare(RenderType type) {
-		Parameters parameters = PARAMETERS.get(type);
-		if (parameters == null) {
-			return null;
-		}
+	public static Parameters parameters(RenderType type) {
+		return PARAMETERS.get(type);
+	}
+
+	public static GpuBufferSlice upload(Parameters parameters) {
+		if (parameters == null) return null;
 		if (uniforms == null) {
 			uniforms = new DynamicUniformStorage<>("Avaritia cosmic parameters", 192, 256);
 		}
@@ -66,12 +66,6 @@ public final class AvaritiaShaders {
 			uvs[index * 4 + 3] = sprite.getV1();
 		}
 		return uniforms.writeUniform(new Uniform(parameters, uvs));
-	}
-
-	public static void bind(GpuBufferSlice parameters, RenderPass pass) {
-		if (parameters != null) {
-			pass.setUniform("CosmicParameters", parameters);
-		}
 	}
 
 	public static void endFrame() {

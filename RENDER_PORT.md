@@ -1,6 +1,14 @@
 # 渲染移植与验证说明
 
-本文描述 1.0.0-rc.3 的当前实现，不包含已淘汰的临时方案。上游为 Aqua3 的 AvaritiaNeo；Fabric 移植与维护为 xiaowen。
+## Minecraft 26.2
+
+- 26.2 使用反向深度：光晕、护甲星空及彩虹使用 `GREATER_THAN_OR_EQUAL`，物品星空保留与底模的 `EQUAL` 深度匹配。相应反转 Iris 贴面偏移和手持近裁剪深度。
+- 渲染管线使用绑定组与 `PreparedRenderType`，在准备阶段保留每次绘制的星空参数、在绘制前上传，并用提交顺序使物品星空在基础模型之后绘制。
+- Iris 延迟绘制使用当前帧的已上传批次，不再复制 `MeshData`。本版临时世界测试覆盖 OpenGL 下的无尽剑、盔甲、物品栏与压缩机；Iris 光影、Vulkan 和第三方动画组合尚未复测。
+
+## Minecraft 26.1.2 历史记录
+
+上游为 Aqua3 的 AvaritiaNeo；Fabric 移植与维护为 xiaowen。以下为 26.1.2 的实现及验证记录。
 
 ## 已移植内容
 

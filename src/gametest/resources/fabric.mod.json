@@ -1,0 +1,13 @@
+{
+	"schemaVersion": 1,
+	"id": "avaritia-test",
+	"version": "1.0.0",
+	"environment": "client",
+	"entrypoints": {
+		"fabric-client-gametest": ["net.byAqua3.avaritia.test.PortSmokeTest"]
+	},
+	"depends": {
+		"avaritia": "*",
+		"fabric-client-gametest-api-v1": "*"
+	}
+}

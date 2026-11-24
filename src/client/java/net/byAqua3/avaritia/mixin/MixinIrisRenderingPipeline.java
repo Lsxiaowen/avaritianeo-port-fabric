@@ -22,6 +22,6 @@ public abstract class MixinIrisRenderingPipeline {
 
 	@Inject(method = "destroy", at = @At("HEAD"))
 	private void avaritia$clearEffects(CallbackInfo callback) {
-		IrisEffectQueue.destroy();
+		IrisEffectQueue.clear();
 	}
 }

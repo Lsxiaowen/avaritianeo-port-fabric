@@ -1,5 +1,14 @@
 # GitHub 发布清单
 
+## Minecraft 26.2 发布检查
+
+- 版本及文件名使用 `1.0.0-rc.4+mc26.2`；发布类型为预发布。
+- 使用 JDK 25 执行 `./gradlew.bat clean releaseBundle`，另运行 `./gradlew.bat runClientGameTest`。
+- 上传 `build/libs/` 中的安装 JAR 与源码 JAR，以及 `build/distributions/` 中的源码 ZIP 和 SHA-256 清单。不要上传测试模组、日志、存档或缓存。
+- 玩家安装要求 Minecraft 26.2、Java 25、Fabric Loader 0.20.1 或更高，以及 26.2 的 Fabric API（验证版本为 0.161.0+26.2）。JEI 和 Mod Menu 可选。更换旧模组前请备份存档。
+
+以下为 26.1.2 的历史发布清单与说明。
+
 ## 仓库内容
 
 上传主项目源码、资源、Gradle Wrapper、构建文件和项目文档。回归测试已移至同级 `avaritianeo-port-fabric-tests/`，不属于主源码上传包；主项目不依赖该目录。保留 LICENSE 的上游署名。
